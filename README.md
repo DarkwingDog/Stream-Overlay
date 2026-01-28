@@ -1,1 +1,1 @@
-https://www.google.com/search?q=https://darkwingdog.github.io/Stream-Overlay/
+https://darkwingdog.github.io/Stream-Overlay/
