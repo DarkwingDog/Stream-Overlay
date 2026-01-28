@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streamlabs Chat Box</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: transparent; /* Makes background clear for OBS/Streaming */
+            overflow: hidden;
+        }
+        .chat-container {
+            width: 100%;
+            height: 100vh;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <iframe 
+            src="https://streamlabs.com/widgets/chat-box/v1/CA984ECAC8A48AE8B3C75D47CDDE7997D5A56CC5BA9E955F5BC60E22A0E1C57951C003FF9DA687B4C5C45A8C11EC8E18B6422419124EE4D33663D1FD5FB302CB6D7C1272F05A3CE1BD954E7B60414E43C66133D2AB8E84BCEE1573136DBA74A24D8C482C98B6B751D9B795B8EC659E3556C82BA5D40FEFA14EA0A2D8BB" 
+            scrolling="no" 
+            allowtransparency="true">
+        </iframe>
+    </div>
+
+</body>
+</html>
