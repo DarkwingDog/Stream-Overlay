@@ -1,52 +1,58 @@
-<script>
-    const log = document.getElementById('log');
-    const targetChannel = 'terrdog420'; 
-
-    // Initialize the Twitch Client with more robust settings
-    const client = new tmi.Client({
-        options: { debug: true },
-        connection: {
-            reconnect: true,
-            secure: true
-        },
-        channels: [ targetChannel ]
-    });
-
-    // Start the connection
-    client.connect().catch(err => {
-        log.innerHTML = `<div class="chat-line"><span class="message" style="color: #e74c3c;">Error: ${err}</span></div>`;
-    });
-
-    // Success Listener
-    client.on('connected', (address, port) => {
-        log.innerHTML = `<div class="chat-line"><span class="message" style="color: #2ecc71;">LIVE: Connected to ${targetChannel}'s chat!</span></div>`;
-    });
-
-    // Message Listener
-    client.on('message', (channel, tags, message, self) => {
-        const chatLine = document.createElement('div');
-        chatLine.className = 'chat-line';
-        
-        const userColor = tags.color || '#3498db';
-        const userName = tags['display-name'] || tags.username;
-
-        chatLine.innerHTML = `
-            <span class="meta" style="color: ${userColor}">${userName}:</span>
-            <span class="message">${message}</span>
-        `;
-
-        log.appendChild(chatLine);
-
-        // Keep last 20 messages for Chromebook performance
-        if (log.childNodes.length > 20) {
-            log.removeChild(log.firstChild);
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>TJ Chat - v1.06</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tmi.js/1.8.5/tmi.min.js"></script>
+    <style>
+        body {
+            background-color: #000000; /* Solid black so he can see white text */
+            color: white;
+            font-family: 'Arial', sans-serif; /* Standard font to ensure it loads */
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+            height: 100vh;
         }
-    });
-
-    // Debug: If it takes more than 5 seconds, show a hint
-    setTimeout(() => {
-        if (log.innerText.includes("Connecting")) {
-            log.innerHTML += `<div class="chat-line"><span class="message" style="color: #f1c40f;">Still trying... try refreshing the page.</span></div>`;
+        #log {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            height: 100%;
         }
-    }, 5000);
-</script>
+        .chat-line {
+            margin-bottom: 8px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .user { margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <div id="log">Connecting to terrdog420...</div>
+
+    <script>
+        const log = document.getElementById('log');
+        const client = new tmi.Client({
+            connection: { reconnect: true, secure: true },
+            channels: [ 'terrdog420' ]
+        });
+
+        client.connect().then(() => {
+            log.innerHTML = '<div style="color:green;">Connected! Ready for chat.</div>';
+        }).catch(err => {
+            log.innerHTML = '<div style="color:red;">Error: ' + err + '</div>';
+        });
+
+        client.on('message', (channel, tags, message, self) => {
+            if (log.innerHTML.includes("Connected")) log.innerHTML = "";
+            const div = document.createElement('div');
+            div.className = 'chat-line';
+            const color = tags.color || '#3498db';
+            div.innerHTML = `<span class="user" style="color:${color}">${tags['display-name']}:</span><span>${message}</span>`;
+            log.appendChild(div);
+            if (log.childNodes.length > 15) log.removeChild(log.firstChild);
+        });
+    </script>
+</body>
+</html>
