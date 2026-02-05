@@ -1,38 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TJ's Live Chat</title>
+    <title>TJ - Custom Stream Chat</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/tmi.js@1.8.5/dist/tmi.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:700">
+
     <style>
-        body, html {
+        /* Version: 1.05
+           Compatibility: Chromebook, GitHub, WordPress
+        */
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
             margin: 0;
             padding: 0;
-            height: 100%;
-            background: transparent; /* Makes chat look clean on the site */
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
         }
-        .chat-container {
-            width: 90%; /* Standardizing to your 90% preference */
-            height: 100vh;
-        }
-        iframe {
+
+        body {
+            text-shadow: 0 0 1px #000, 0 0 2px #000;
+            background: #1a1a1a; /* Dark background for Chromebook visibility */
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            font-size: 24px; 
+            line-height: 1.5em;
+            color: #ffffff;
             width: 100%;
-            height: 100%;
-            border: none;
+        }
+
+        #log {
+            display: table;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 0 10px 10px;
+            width: 90%; /* Standard 90% width */
+            table-layout: fixed;
+        }
+
+        .chat-line {
+            display: table-row;
+            animation: fadeInRight .3s ease forwards;
+        }
+
+        .meta {
+            vertical-align: top;
+            display: table-cell;
+            padding-bottom: 0.1em;
+            width: 35%;
+            text-align: right;
+            padding-right: 0.5em;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .message {
+            vertical-align: top;
+            display: table-cell;
+            padding-bottom: 0.1em;
+            word-wrap: break-word;
+            width: 65%;
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Mobile / Small Screen Stacking */
+        @media screen and (max-width: 768px) {
+            #log, .chat-line, .meta, .message {
+                display: block;
+                width: 100%;
+                text-align: left;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="chat-container">
-        <iframe src="https://streamlabs.com/widgets/chat-box/v1/CA984ECAC8A48AE8B3C75D47CDDE7997D5A56CC5BA9E955F5BC60E22A0E1C57951C003FF9DA687B4C5C45A8C11EC8E18B6422419124EE4D33663D1FD5FB302CB6D7C1272F05A3CE1BD954E7B60414E43C66133D2AB8E84BCEE1573136DBA74A24D8C482C98B6B751D9B795B8EC659E3556C82BA5D40FEFA14EA0A2D8BB"></iframe>
+    <div id="log" class="sl__chat__layout">
+        <div class="chat-line"><span class="message" style="color: #888;">Connecting to terrdog420...</span></div>
     </div>
 
+    <script>
+        // Connect to TJ's Twitch Channel
+        const client = new tmi.Client({
+            channels: [ 'terrdog420' ]
+        });
+
+        client.connect();
+
+        client.on('message', (channel, tags, message, self) => {
+            const log = document.getElementById('log');
+            const chatLine = document.createElement('div');
+            chatLine.className = 'chat-line';
+
+            const userColor = tags.color || '#3498db';
+            const userName = tags['display-name'] || tags.username;
+
+            chatLine.innerHTML = `
+                <span class="meta" style="color: ${userColor}">
+                    <span class="name">${userName}</span>
+                </span>
+                <span class="message">${message}</span>
+            `;
+
+            log.appendChild(chatLine);
+
+            // Auto-scroll and cleanup
+            if (log.childNodes.length > 25) {
+                log.removeChild(log.firstChild);
+            }
+        });
+
+        client.on('connected', () => {
+            const log = document.getElementById('log');
+            log.innerHTML = `<div class="chat-line"><span class="message" style="color: #2ecc71;">System: Connected to TJ's Live Chat!</span></div>`;
+        });
+    </script>
 </body>
 </html>
