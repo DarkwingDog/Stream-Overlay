@@ -1,121 +1,42 @@
 https://darkwingdog.github.io/Stream-Overlay/
 
-<!-- item will be appended to this layout -->
-<div id="log" class="sl__chat__layout">
+# 🐺 Werewolf Hunter Command Center - TJ Edition (terrdog420)
 
-</div>
+This repository contains the hardened multi-stream relay and interactive overlay for **terrdog420**'s hunter stream setup.
 
-<!-- chat item -->
-<script type="text/template" id="chatlist_item">
-    <div data-from="{from}" data-id="{messageId}">
-        <span class="meta" style="color: {color}">
-            <span class="badges"></span>
-            <span class="name">{from}</span>
-        </span>
+## 🛠️ Project Goals
+1. **24/7 Relay Stability**: Maintain a bridge between Twitch, Discord, and TikTok without manual intervention.
+2. **Interactive Trophies**: Automated tracking for The Hunter: Call of the Wild.
+3. **Wolf-Branded Alerts**: High-energy "Wolf Bursts" for followers and subscribers.
 
-        <span class="message">{message}</span>
-    </div>
-</script> @import url(https://fonts.googleapis.com/css?family=Roboto:700);
+---
 
-* {
-    box-sizing: border-box;
-}
+## 📂 File Structure
+* **`index.html`**: The structural skeleton of the overlay.
+* **`style.css`**: The design layer (Positioning, Wolf-Themed Animations).
+* **`script.js`**: The brain (Twitch Logic, EST Clock, Trophy Sync).
+* **`relay.js`**: The GitHub Actions bridge (Heartbeat & TikTok Persistence).
 
-html, body {
-    height: 100%;
-    overflow: hidden;
-}
+---
 
-body {
-    text-shadow: 0 0 1px #000, 0 0 2px #000;
-    background: {background_color};
-    font-family: 'Roboto';
-    font-weight: 700;
-    font-size: {font_size};
-    line-height: 1.5em;
-    color: {text_color};
-}
+## 🧩 Key Bug Fixes & Standards (Internal reference)
+* **TikTok Persistence**: The relay uses a `while(true)` loop to handle TikTok being offline. It must NEVER throw an error that stops the GitHub runner.
+* **Heartbeat Engine**: Logs a timestamp every 60s to prevent GitHub Actions from canceling the operation due to "inactivity".
+* **Great One Logic**: The 👑 tracker is hidden by default. It only flips to `display: flex` when `!greatone` count > 0.
+* **Time Sync**: All clocks are hard-coded to `America/Chicago` (CST).
+* **Wolf Bursts**: All burst particles must use wolf-themed emojis (`🐺`, `🐾`, `🌕`, `🌑`). No rabbits or unicorns. //This will be changed
 
-#log>div {
-    animation: fadeInRight .3s ease forwards, fadeOut 0.5s ease {message_hide_delay} forwards;
-    -webkit-animation: fadeInRight .3s ease forwards, fadeOut 0.5s ease {message_hide_delay} forwards;
-}
+---
 
-.colon {
-    display: none;
-}
+## 🤖 AI Initialization String (FOR GEMINI)
+*Copy and paste the block below into any new chat to immediately sync the AI with this project:*
 
-#log {
-    display: table;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    padding: 0 10px 10px;
-    width: 100%;
-    table-layout: fixed;
-}
+> **"I am working on the Werewolf Hunter Project for TJ (terrdog420). The standards are: Full Code Mandate (no snippets), EST Time Lock, Wolf Bursts only, and the TikTok Persistence relay logic. The Trophy Log hierarchy starts with the Great One (hidden until 1+), followed by Diamond, Gold, Silver, and Bronze. Use the 24-hour global tracking window for Amazon affiliate links with tag 'werewolf3788-20'. Ground all code in the saved standards for S&K Ventures."**
 
-#log>div {
-    display: table-row;
-}
+---
 
-#log>div.deleted {
-    visibility: hidden;
-}
-
-#log .emote {
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    padding: 0.4em 0.2em;
-    position: relative;
-}
-
-#log .emote img {
-    display: inline-block;
-    height: 1em;
-    opacity: 0;
-}
-
-#log .message,#log .meta {
-    vertical-align: top;
-    display: table-cell;
-    padding-bottom: 0.1em;
-}
-
-#log .meta {
-    width: 35%;
-    text-align: right;
-    padding-right: 0.5em;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-#log .message {
-    word-wrap: break-word;
-    width: 65%;
-}
-
-.badge {
-    display: inline-block;
-    margin-right: 0.2em;
-    position: relative;
-    height: 1em;
-    vertical-align: middle;
-    top: -0.1em;
-}
-
-.name {
-    margin-left: 0.2em;
-}
-
-// Please use event listeners to run functions.
-document.addEventListener('onLoad', function (obj) {
-  // obj will be empty for chat widget
-  // this will fire only once when the widget loads
-});
-
-document.addEventListener('onEventReceived', function (obj) {
-  // obj will contain information about the event
-});
+## 🚀 Deployment for TJ
+1. **Fork/Clone**: Clone this repo to TJ's GitHub account.
+2. **Secrets**: Add Twitch/Discord/TikTok credentials to GitHub Secrets.
+3. **Actions**: Enable the `main.yml` workflow.
+4. **OBS**: Add `index.html` as a Browser Source (Width: 100%, Height: 100%).
