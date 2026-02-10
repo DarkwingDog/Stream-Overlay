@@ -1,58 +1,195 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TJ Chat - v1.06</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tmi.js/1.8.5/tmi.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terrdog420 - Command Master List</title>
     <style>
-        body {
-            background-color: #000000; /* Solid black so he can see white text */
-            color: white;
-            font-family: 'Arial', sans-serif; /* Standard font to ensure it loads */
-            margin: 0;
-            padding: 20px;
-            overflow: hidden;
-            height: 100vh;
+        @import url(https://fonts.googleapis.com/css?family=Roboto:700,900);
+
+        :root {
+            --purple-main: #A020F0;
+            --purple-glow: rgba(160, 32, 240, 0.8);
+            --bg-dark: #0a0a0a;
+            --card-bg: #151515;
         }
-        #log {
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 40px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
-            height: 100%;
+            align-items: center;
         }
-        .chat-line {
-            margin-bottom: 8px;
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .main-logo {
+            height: 120px;
+            width: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--purple-main);
+            filter: drop-shadow(0 0 15px var(--purple-glow));
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--purple-main);
+        }
+
+        .category-title {
+            color: var(--purple-main);
+            text-transform: uppercase;
             font-size: 24px;
-            font-weight: bold;
+            margin: 30px 0 15px 0;
+            border-bottom: 2px solid var(--purple-main);
+            width: 100%;
+            max-width: 800px;
         }
-        .user { margin-right: 10px; }
+
+        .command-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .command-card {
+            background: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .command-card:hover {
+            border-color: var(--purple-main);
+            transform: translateY(-2px);
+        }
+
+        .cmd-name {
+            color: var(--purple-main);
+            font-size: 20px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .cmd-response {
+            font-size: 14px;
+            color: #ccc;
+            line-height: 1.4;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .copy-btn {
+            background: var(--purple-main);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            transition: opacity 0.2s;
+        }
+
+        .copy-btn:active {
+            opacity: 0.7;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            background: var(--purple-main);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            display: none;
+            animation: slideUp 0.3s forwards;
+        }
+
+        @keyframes slideUp { from { transform: translateY(100px); } to { transform: translateY(0); } }
     </style>
 </head>
 <body>
-    <div id="log">Connecting to terrdog420...</div>
+
+    <div class="header">
+        <img src="https://raw.githubusercontent.com/KFruti88/Universal-Stream-Overlay/main/images/terrdog420.png" class="main-logo" alt="Logo">
+        <h1>Terrdog420 Command Center</h1>
+    </div>
+
+    <div class="category-title">theHunter: Call of the Wild</div>
+    <div class="command-grid" id="hunter-commands"></div>
+
+    <div class="category-title">The Angler: Call of the Wild</div>
+    <div class="command-grid" id="angler-commands"></div>
+
+    <div class="category-title">Utility</div>
+    <div class="command-grid" id="utility-commands"></div>
+
+    <div id="toast" class="toast">Command Copied!</div>
 
     <script>
-        const log = document.getElementById('log');
-        const client = new tmi.Client({
-            connection: { reconnect: true, secure: true },
-            channels: [ 'terrdog420' ]
-        });
+        const commands = {
+            hunter: [
+                { cmd: "!greatone", res: "Only the elite can track these. We are currently sitting on $(count greatone) 👑 GREAT ONES in the hall of fame!" },
+                { cmd: "!diamond", res: "Outshining the Golds! The pack is currently showcasing $(count diamond) 💎 Diamonds in the lodge!" },
+                { cmd: "!gold", res: "Keeping the momentum up! That's $(count gold) 🥇 Gold trophies in the collection!" },
+                { cmd: "!silver", res: "Silver Trophies: $(count silver)" },
+                { cmd: "!bronze", res: "Stuck with $(count bronze) 🥉 participation awards... we're hunting bigger game." },
+                { cmd: "!levelup", res: "Gaining ground with every hunt. We've reached Level $(count level) 🆙!" }
+            ],
+            angler: [
+                { cmd: "!greatfish", res: "Number of Legendary Fish I have $(count greatfish)" },
+                { cmd: "!diamondfish", res: "Outperforming the rest with $(count diamondfish) 💎 Diamonds in the net!" },
+                { cmd: "!goldfish", res: "The water is treating us well! That’s $(count goldfish) 🥇 Gold fish in the bucket!" },
+                { cmd: "!silverfish", res: "Stalking the shallows and pulled in $(count silverfish) 🥈 Silvers today." },
+                { cmd: "!bronzefish", res: "Caught $(count bronzefish) 🥉 bait-stealers... definitely looking for bigger fish." }
+            ],
+            utility: [
+                { cmd: "!time", res: "$(time.timezone America/Chicago)" },
+                { cmd: "!split", res: "You killed $(count split) with another player" }
+            ]
+        };
 
-        client.connect().then(() => {
-            log.innerHTML = '<div style="color:green;">Connected! Ready for chat.</div>';
-        }).catch(err => {
-            log.innerHTML = '<div style="color:red;">Error: ' + err + '</div>';
-        });
+        function renderCommands() {
+            for (let cat in commands) {
+                const container = document.getElementById(`${cat}-commands`);
+                commands[cat].forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'command-card';
+                    card.innerHTML = `
+                        <span class="cmd-name">${item.cmd}</span>
+                        <span class="cmd-response">${item.res}</span>
+                        <button class="copy-btn" onclick="copyToClipboard('${item.res}')">Copy Message</button>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+        }
 
-        client.on('message', (channel, tags, message, self) => {
-            if (log.innerHTML.includes("Connected")) log.innerHTML = "";
-            const div = document.createElement('div');
-            div.className = 'chat-line';
-            const color = tags.color || '#3498db';
-            div.innerHTML = `<span class="user" style="color:${color}">${tags['display-name']}:</span><span>${message}</span>`;
-            log.appendChild(div);
-            if (log.childNodes.length > 15) log.removeChild(log.firstChild);
-        });
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('toast');
+                toast.style.display = 'block';
+                setTimeout(() => { toast.style.display = 'none'; }, 2000);
+            });
+        }
+
+        renderCommands();
     </script>
 </body>
 </html>
