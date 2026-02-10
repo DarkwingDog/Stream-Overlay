@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <title>Terrdog420 - Live Stream Hub</title>
+    <title>Terrdog420 - Mobile Responsive Hub</title>
     <style>
         @import url(https://fonts.googleapis.com/css?family=Roboto:700,900);
 
@@ -24,6 +24,7 @@
             display: flex;
             height: 100vh;
             overflow: hidden;
+            flex-direction: row; /* Default PC Layout */
         }
 
         /* --- Left Side: Chat Column --- */
@@ -50,10 +51,11 @@
             background: #333;
             color: #eee;
             border: 1px solid #444;
-            padding: 4px 8px;
-            font-size: 10px;
+            padding: 6px 10px;
+            font-size: 11px;
             cursor: pointer;
             text-transform: uppercase;
+            border-radius: 4px;
         }
 
         #chat-frame {
@@ -65,56 +67,80 @@
         /* --- Right Side: Dashboard --- */
         #dashboard-container {
             flex-grow: 1;
-            padding: 40px;
+            padding: 20px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .header { text-align: center; margin-bottom: 40px; }
+        .header { text-align: center; margin-bottom: 30px; }
         .main-logo {
-            height: 100px; width: 100px; border-radius: 50%;
-            border: 4px solid var(--purple-main);
-            filter: drop-shadow(0 0 15px var(--purple-glow));
-            margin-bottom: 15px;
+            height: 80px; width: 80px; border-radius: 50%;
+            border: 3px solid var(--purple-main);
+            filter: drop-shadow(0 0 10px var(--purple-glow));
+            margin-bottom: 10px;
         }
 
-        h1 { text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--purple-main); font-size: 24px; margin: 0; }
+        h1 { text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--purple-main); font-size: 20px; margin: 0; }
 
         .category-title {
-            color: var(--purple-main); text-transform: uppercase; font-size: 20px;
-            margin: 30px 0 15px 0; border-bottom: 2px solid var(--purple-main);
+            color: var(--purple-main); text-transform: uppercase; font-size: 18px;
+            margin: 25px 0 10px 0; border-bottom: 2px solid var(--purple-main);
             width: 100%; max-width: 800px;
         }
 
         .command-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px; width: 100%; max-width: 800px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px; width: 100%; max-width: 800px;
         }
 
         .command-card {
             background: var(--card-bg); border: 1px solid #333; border-radius: 8px;
-            padding: 15px; transition: transform 0.2s, border-color 0.2s;
+            padding: 15px;
         }
 
-        .command-card:hover { border-color: var(--purple-main); transform: translateY(-2px); }
-        .cmd-name { color: var(--purple-main); font-size: 18px; font-weight: 900; margin-bottom: 5px; display: block; }
-        .cmd-response { font-size: 13px; color: #ccc; line-height: 1.4; display: block; margin-bottom: 12px; }
+        .cmd-name { color: var(--purple-main); font-size: 17px; font-weight: 900; margin-bottom: 5px; display: block; }
+        .cmd-response { font-size: 12px; color: #ccc; line-height: 1.4; display: block; margin-bottom: 12px; }
 
         .copy-btn {
             background: var(--purple-main); color: white; border: none;
-            padding: 8px 15px; border-radius: 4px; cursor: pointer;
-            font-weight: 700; font-size: 11px; text-transform: uppercase;
+            padding: 12px 20px; border-radius: 6px; cursor: pointer;
+            font-weight: 700; font-size: 13px; text-transform: uppercase;
+            width: 100%; /* Full width for easier mobile tapping */
         }
 
         .toast {
-            position: fixed; bottom: 20px; right: 20px; background: var(--purple-main);
-            padding: 10px 20px; border-radius: 20px; font-weight: 700;
-            display: none; animation: slideUp 0.3s forwards; z-index: 1000;
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--purple-main); padding: 12px 25px; border-radius: 30px;
+            font-weight: 700; display: none; z-index: 2000; box-shadow: 0 0 15px var(--purple-glow);
         }
 
-        @keyframes slideUp { from { transform: translateY(100px); } to { transform: translateY(0); } }
+        /* --- RESPONSIVE MOBILE OVERRIDES --- */
+        @media (max-width: 800px) {
+            body {
+                flex-direction: column; /* Stack vertically on phones */
+                overflow-y: auto;
+                height: auto;
+            }
+
+            #chat-column {
+                width: 100%;
+                min-width: 100%;
+                height: 400px; /* Fixed height for chat on mobile */
+                border-right: none;
+                border-bottom: 2px solid var(--purple-main);
+            }
+
+            #dashboard-container {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .command-grid {
+                grid-template-columns: 1fr; /* Single column for commands */
+            }
+        }
     </style>
 </head>
 <body>
@@ -122,7 +148,7 @@
     <div id="chat-column">
         <div class="chat-header">
             <span style="font-size: 12px; color: var(--purple-main); font-weight: 900;">LIVE CHAT</span>
-            <button class="refresh-btn" onclick="refreshChat()">Refresh Chat</button>
+            <button class="refresh-btn" onclick="refreshChat()">Refresh</button>
         </div>
         <iframe 
             src="https://www.twitch.tv/embed/terrdog420/chat?parent=darkwingdog.github.io&parent=cdpn.io&parent=localhost&darkpopout" 
@@ -133,20 +159,20 @@
     <div id="dashboard-container">
         <div class="header">
             <img src="https://raw.githubusercontent.com/KFruti88/Universal-Stream-Overlay/main/images/terrdog420.png" class="main-logo" alt="Logo">
-            <h1>Terrdog420 Dashboard</h1>
+            <h1>Command Hub</h1>
         </div>
 
-        <div class="category-title">theHunter: Call of the Wild</div>
+        <div class="category-title">Hunter: COTW</div>
         <div id="hunter-commands" class="command-grid"></div>
 
-        <div class="category-title">The Angler: Call of the Wild</div>
+        <div class="category-title">Angler: COTW</div>
         <div id="angler-commands" class="command-grid"></div>
 
         <div class="category-title">Utility</div>
         <div id="utility-commands" class="command-grid"></div>
     </div>
 
-    <div id="toast" class="toast">Command Copied!</div>
+    <div id="toast" class="toast">COPIED!</div>
 
     <script>
         function refreshChat() {
@@ -195,7 +221,7 @@
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
                 const toast = document.getElementById('toast');
-                toast.innerText = text + " Copied!";
+                toast.innerText = text + " COPIED!";
                 toast.style.display = 'block';
                 setTimeout(() => { toast.style.display = 'none'; }, 2000);
             });
