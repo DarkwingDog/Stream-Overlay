@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <title>Terrdog420 - Mobile Responsive Hub</title>
+    <title>Terrdog420 - Master Hub</title>
     <style>
         @import url(https://fonts.googleapis.com/css?family=Roboto:700,900);
 
         :root {
+            --hunter-green: #2e8b57;
+            --angler-blue: #00ced1;
+            --system-silver: #e5e4e2;
             --purple-main: #A020F0;
             --purple-glow: rgba(160, 32, 240, 0.8);
             --bg-dark: #0a0a0a;
@@ -24,7 +27,7 @@
             display: flex;
             height: 100vh;
             overflow: hidden;
-            flex-direction: row; /* Default PC Layout */
+            flex-direction: row;
         }
 
         /* --- Left Side: Chat Column --- */
@@ -54,15 +57,10 @@
             padding: 6px 10px;
             font-size: 11px;
             cursor: pointer;
-            text-transform: uppercase;
             border-radius: 4px;
         }
 
-        #chat-frame {
-            flex-grow: 1;
-            width: 100%;
-            border: none;
-        }
+        #chat-frame { flex-grow: 1; width: 100%; border: none; }
 
         /* --- Right Side: Dashboard --- */
         #dashboard-container {
@@ -82,64 +80,60 @@
             margin-bottom: 10px;
         }
 
-        h1 { text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--purple-main); font-size: 20px; margin: 0; }
-
         .category-title {
-            color: var(--purple-main); text-transform: uppercase; font-size: 18px;
-            margin: 25px 0 10px 0; border-bottom: 2px solid var(--purple-main);
-            width: 100%; max-width: 800px;
+            text-transform: uppercase;
+            font-size: 18px;
+            margin: 25px 0 10px 0;
+            padding-bottom: 5px;
+            width: 100%;
+            max-width: 800px;
+            font-weight: 900;
         }
 
+        .title-hunter { color: var(--hunter-green); border-bottom: 2px solid var(--hunter-green); }
+        .title-angler { color: var(--angler-blue); border-bottom: 2px solid var(--angler-blue); }
+        .title-system { color: var(--system-silver); border-bottom: 2px solid var(--system-silver); }
+
         .command-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px; width: 100%; max-width: 800px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 20px;
         }
 
         .command-card {
-            background: var(--card-bg); border: 1px solid #333; border-radius: 8px;
+            background: var(--card-bg);
+            border-radius: 8px;
             padding: 15px;
         }
 
-        .cmd-name { color: var(--purple-main); font-size: 17px; font-weight: 900; margin-bottom: 5px; display: block; }
-        .cmd-response { font-size: 12px; color: #ccc; line-height: 1.4; display: block; margin-bottom: 12px; }
+        .card-hunter { border: 1px solid var(--hunter-green); }
+        .card-angler { border: 1px solid var(--angler-blue); }
+        .card-system { border: 1px solid var(--system-silver); }
+
+        .cmd-name { font-size: 17px; font-weight: 900; }
+        .cmd-response { font-size: 12px; color: #ccc; display: block; margin-bottom: 12px; }
 
         .copy-btn {
-            background: var(--purple-main); color: white; border: none;
-            padding: 12px 20px; border-radius: 6px; cursor: pointer;
-            font-weight: 700; font-size: 13px; text-transform: uppercase;
-            width: 100%; /* Full width for easier mobile tapping */
+            color: white; border: none; padding: 12px 20px; border-radius: 6px;
+            cursor: pointer; font-weight: 700; width: 100%; text-transform: uppercase;
         }
+        .btn-hunter { background: var(--hunter-green); }
+        .btn-angler { background: var(--angler-blue); color: #000; }
+        .btn-system { background: var(--system-silver); color: #000; }
 
         .toast {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background: var(--purple-main); padding: 12px 25px; border-radius: 30px;
-            font-weight: 700; display: none; z-index: 2000; box-shadow: 0 0 15px var(--purple-glow);
+            font-weight: 700; display: none; z-index: 2000;
         }
 
-        /* --- RESPONSIVE MOBILE OVERRIDES --- */
         @media (max-width: 800px) {
-            body {
-                flex-direction: column; /* Stack vertically on phones */
-                overflow-y: auto;
-                height: auto;
-            }
-
-            #chat-column {
-                width: 100%;
-                min-width: 100%;
-                height: 400px; /* Fixed height for chat on mobile */
-                border-right: none;
-                border-bottom: 2px solid var(--purple-main);
-            }
-
-            #dashboard-container {
-                width: 100%;
-                padding: 15px;
-            }
-
-            .command-grid {
-                grid-template-columns: 1fr; /* Single column for commands */
-            }
+            body { flex-direction: column; overflow-y: auto; height: auto; }
+            #chat-column { width: 100%; min-width: 100%; height: 400px; border-right: none; border-bottom: 2px solid var(--purple-main); }
+            .command-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -150,26 +144,23 @@
             <span style="font-size: 12px; color: var(--purple-main); font-weight: 900;">LIVE CHAT</span>
             <button class="refresh-btn" onclick="refreshChat()">Refresh</button>
         </div>
-        <iframe 
-            src="https://www.twitch.tv/embed/terrdog420/chat?parent=darkwingdog.github.io&parent=cdpn.io&parent=localhost&darkpopout" 
-            id="chat-frame">
-        </iframe>
+        <iframe src="https://www.twitch.tv/embed/terrdog420/chat?parent=darkwingdog.github.io&parent=cdpn.io&parent=localhost&darkpopout" id="chat-frame"></iframe>
     </div>
 
     <div id="dashboard-container">
         <div class="header">
-            <img src="https://raw.githubusercontent.com/KFruti88/Universal-Stream-Overlay/main/images/terrdog420.png" class="main-logo" alt="Logo">
-            <h1>Command Hub</h1>
+            <img src="https://raw.githubusercontent.com/KFruti88/Universal-Stream-Overlay/main/images/terrdog420.png" class="main-logo">
+            <h1 style="font-size: 20px;">TERRDOG420 HUB</h1>
         </div>
 
-        <div class="category-title">Hunter: COTW</div>
+        <div class="category-title title-hunter">Hunter: Call of the Wild</div>
         <div id="hunter-commands" class="command-grid"></div>
 
-        <div class="category-title">Angler: COTW</div>
+        <div class="category-title title-angler">The Angler: Call of the Wild</div>
         <div id="angler-commands" class="command-grid"></div>
 
-        <div class="category-title">Utility</div>
-        <div id="utility-commands" class="command-grid"></div>
+        <div class="category-title title-system">StreamElements Commands</div>
+        <div id="system-commands" class="command-grid"></div>
     </div>
 
     <div id="toast" class="toast">COPIED!</div>
@@ -196,9 +187,17 @@
                 { cmd: "!silverfish", res: "Stalking the shallows and pulled in $(count silverfish) 🥈 Silvers today." },
                 { cmd: "!bronzefish", res: "Caught $(count bronzefish) 🥉 bait-stealers... definitely looking for bigger fish." }
             ],
-            utility: [
-                { cmd: "!time", res: "$(time.timezone America/Chicago)" },
-                { cmd: "!split", res: "You killed $(count split) with another player" }
+            system: [
+                { cmd: "!settitle", res: "Update the stream title." },
+                { cmd: "!setgame", res: "Update the channels game." },
+                { cmd: "!editcounter", res: "Edit a custom counter using name/getcount." },
+                { cmd: "!watchtime", res: "Check your total time watching the stream." },
+                { cmd: "!uptime", res: "See how long the hunt has been live." },
+                { cmd: "!tip", res: "Get the link to tip the channel." },
+                { cmd: "!top", res: "Show the top of the leaderboard." },
+                { cmd: "!followage", res: "Check how long you have been following the pack." },
+                { cmd: "!commands", res: "View the full list of available chat commands." },
+                { cmd: "!accountage", res: "See when your Twitch account was created." }
             ]
         };
 
@@ -207,11 +206,11 @@
                 const container = document.getElementById(`${cat}-commands`);
                 commands[cat].forEach(item => {
                     const card = document.createElement('div');
-                    card.className = 'command-card';
+                    card.className = `command-card card-${cat}`;
                     card.innerHTML = `
-                        <span class="cmd-name">${item.cmd}</span>
-                        <span class="cmd-response">${item.res}</span>
-                        <button class="copy-btn" onclick="copyToClipboard('${item.cmd}')">Copy Command</button>
+                        <span class="cmd-name" style="color: var(--${cat === 'system' ? 'system-silver' : cat === 'hunter' ? 'hunter-green' : 'angler-blue'})">${item.cmd}</span>
+                        <p class="cmd-response">${item.res}</p>
+                        <button class="copy-btn btn-${cat}" onclick="copyToClipboard('${item.cmd}')">Copy Command</button>
                     `;
                     container.appendChild(card);
                 });
